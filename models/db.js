@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize("sakila", "root", "inserisci la tua password", {
+const sequelize = new Sequelize("sakila", "root", "Snake.1234", {
     host : '127.0.0.1',
     dialect : 'mysql',
     operatorsAliases : 0,
@@ -16,4 +16,5 @@ const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+db.customers = require('./customers')(sequelize, Sequelize);
 module.exports = db;
