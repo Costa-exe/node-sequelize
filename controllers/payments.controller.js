@@ -34,7 +34,7 @@ exports.create = (req, res) => {
       .catch(err => {
           res.status(500).send({
               message:
-              err.message || "Some error occurred while creating the Payments."
+              err.message || "Some error occurred while creating the Payment."
           });
       });
 };
@@ -47,13 +47,13 @@ exports.findOne = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Payments with id=${id}.`
+          message: `Cannot find Payment with id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-      message: `Error retrieving Payments with id=${id}`
+      message: `Error retrieving Payment with id=${id}`
     });
   });
 };
@@ -66,17 +66,17 @@ exports.update = (req, res) => {
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Payments was updated successfully."
+        message: "Payment was updated successfully."
       });
     } else {
       res.send({
-        message: `Cannot update Payments with id=${id}.`
+        message: `Cannot update Payment with id=${id}.`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: `Error updating Payments with id=${id}`
+      message: `Error updating Payment with id=${id}`
     });
   });
 };
@@ -89,17 +89,17 @@ exports.deleteOne = (req, res) => {
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Payments was deleted successfully!"
+        message: "Payment was deleted successfully!"
       });
     } else {
       res.send({
-        message: `Cannot delete Payments with id=${id}.`
+        message: `Cannot delete Payment with id=${id}.`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: `Could not delete Payments with id=${id}`
+      message: `Could not delete Payment with id=${id}`
     });
   });
 };

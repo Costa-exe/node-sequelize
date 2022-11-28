@@ -37,7 +37,7 @@ exports.create = (req, res) => {
       .catch(err => {
           res.status(500).send({
               message:
-              err.message || "Some error occurred while creating the Orders."
+              err.message || "Some error occurred while creating the Order."
           });
       });
 };
@@ -50,13 +50,13 @@ exports.findOne = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Orders with id=${id}.`
+          message: `Cannot find Order with id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-      message: `Error retrieving Orders with id=${id}`
+      message: `Error retrieving Order with id=${id}`
     });
   });
 };
@@ -69,17 +69,17 @@ exports.update = (req, res) => {
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Orders was updated successfully."
+        message: "Order was updated successfully."
       });
     } else {
       res.send({
-        message: `Cannot update Orders with id=${id}.`
+        message: `Cannot update Order with id=${id}.`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: `Error updating Orders with id=${id}`
+      message: `Error updating Order with id=${id}`
     });
   });
 };
@@ -92,17 +92,17 @@ exports.deleteOne = (req, res) => {
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Orders was deleted successfully!"
+        message: "Order was deleted successfully!"
       });
     } else {
       res.send({
-        message: `Cannot delete Orders with id=${id}.`
+        message: `Cannot delete Order with id=${id}.`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: `Could not delete Orders with id=${id}`
+      message: `Could not delete Order with id=${id}`
     });
   });
 };
