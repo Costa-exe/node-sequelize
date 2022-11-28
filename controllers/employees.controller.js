@@ -3,134 +3,129 @@ const db = require('../models/init-models');
 const models = db(sequelize);
 
 exports.findAll = (req, res) => {
-    models.customers.findAll()
+    models.employees.findAll()
     .then(data => {
         if (data) {
             res.send(data);
         } else {
             res.status(404).send({
-                message: `No Customers.`
+                message: `No Employees.`
             });
         }
     }).catch(err => {
         res.status(500).send({
-            message: "Error retrieving All Customers."
+            message: "Error retrieving All Employees."
         });
     });
 };
 
 exports.create = (req, res) => {
-    const customer = {
-        customerNumber: req.body.customerNumber,
-        customerName: req.body.customerName,
-        contactLastName: req.body.contactLastName,
-        contactFirstName: req.body.contactFirstName,
-        phone: req.body.phone,
-        addressLine1: req.body.addressLine1,
-        addressLine2: req.body.addressLine2,
-        city: req.body.city,
-        state: req.body.state,
-        postalCode: req.body.postalCode,
-        country: req.body.country,
-        salesRepEmployeeNumber: req.body.salesRepEmployeeNumber,
-        creditLimit: req.body.creditLimit
+    const employee = {
+        employeeNumber: req.body.employeeNumber,
+        lastName: req.body.lastName,
+        firstName: req.body.firstName,
+        extension: req.body.extension,
+        email: req.body.email,
+        officeCode: req.body.officeCode,
+        reportsTo: req.body.reportsTo,
+        jobTitle: req.body.jobTitle,
     }
 
-    models.customers.create(customer)
+    models.employees.create(employee)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                err.message || "Some error occurred while creating the Customer."
+                err.message || "Some error occurred while creating the Employee."
             });
         });
 };
 
 exports.findOne = (req, res) => {
     const id = req.query.id;
-    models.customers.findByPk(id)
+    models.employees.findByPk(id)
       .then(data => {
         if (data) {
           res.send(data);
         } else {
           res.status(404).send({
-            message: `Cannot find Customer with id=${id}.`
+            message: `Cannot find Employee with id=${id}.`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-        message: `Error retrieving Customer with id=${id}`
+        message: `Error retrieving Employee with id=${id}`
       });
     });
 };
 
 exports.update = (req, res) => {
     const id = req.query.id;
-    models.customers.update(req.body, {
+    models.employees.update(req.body, {
       where: { id: id }
     })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Customer was updated successfully."
+          message: "Employee was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Customer with id=${id}.`
+          message: `Cannot update Employee with id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: `Error updating Customer with id=${id}`
+        message: `Error updating Employee with id=${id}`
       });
     });
 };
 
 exports.deleteOne = (req, res) => {
     const id = req.query.id;
-    models.customers.destroy({
+    models.employees.destroy({
       where: { id: id }
     })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Customer was deleted successfully!"
+          message: "Employee was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Customer with id=${id}.`
+          message: `Cannot delete Employee with id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: `Could not delete Customer with id=${id}`
+        message: `Could not delete Employee with id=${id}`
       });
     });
 };
 
 exports.deleteAll = (req, res) => {
-    models.customers.destroy({
+    models.employees.destroy({
       where: {}
     })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "All Customers were deleted successfully!"
+          message: "All Employees were deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Customers.`
+          message: `Cannot delete Employees.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: `Could not delete Customers.`
+        message: `Could not delete Employees.`
       });
     });
 };
