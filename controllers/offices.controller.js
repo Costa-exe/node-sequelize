@@ -1,6 +1,5 @@
 const { sequelize } = require('../utilities/db');
 const db = require('../models/init-models');
-const offices = require('../models/offices');
 const models = db(sequelize);
 
 exports.findAll = (req, res) => {

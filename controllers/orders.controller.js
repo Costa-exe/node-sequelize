@@ -1,3 +1,7 @@
+const { sequelize } = require('../utilities/db');
+const db = require('../models/init-models');
+const models = db(sequelize);
+
 exports.findAll = (req, res) => {
   models.orders.findAll()
   .then(data => {
