@@ -1,26 +1,43 @@
-const db = require('classicmodels');
-const payments = require('../models/payments');
-const Payments = db.payments;
-const Op = db.Sequelize.Op;
-  const payments = {
-    title: req.body.title,
-    subtitle: req.body.subtitle,
-    author: req.body.author,
-    published: req.body.published ? req.body.published : false
-  };  Payments.create(payments)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
+exports.findAll = (req, res) => {
+  models.payments.findAll()
+  .then(data => {
+      if (data) {
+          res.send(data);
+      } else {
+          res.status(404).send({
+              message: `No Payments.`
+          });
+      }
+  }).catch(err => {
       res.status(500).send({
-        message:
-        err.message || "Some error occurred while creating the Tutorial."
-     });
-    });
+          message: "Error retrieving All Payments."
+      });
+  });
+};
 
+exports.create = (req, res) => {
+  const payments = {
+      customerNumber: req.body.customerNumber,
+      checkNumber: req.body.checkNumber,
+      paymentDate: req.body.paymentDate,
+      amount: req.body.amount
+  }
 
-  const id = req.params.id;
-  Payments.findByPk(id)
+  models.payments.create(payments)
+      .then(data => {
+          res.send(data);
+      })
+      .catch(err => {
+          res.status(500).send({
+              message:
+              err.message || "Some error occurred while creating the Payments."
+          });
+      });
+};
+
+exports.findOne = (req, res) => {
+  const id = req.query.id;
+  models.payments.findByPk(id)
     .then(data => {
       if (data) {
         res.send(data);
@@ -32,13 +49,14 @@ const Op = db.Sequelize.Op;
     })
     .catch(err => {
       res.status(500).send({
-      message: "Error retrieving Payments with id=" + id
+      message: `Error retrieving Payments with id=${id}`
     });
   });
+};
 
-
-  const id = req.params.id;
-  Payments.update(req.body, {
+exports.update = (req, res) => {
+  const id = req.query.id;
+  models.payments.update(req.body, {
     where: { id: id }
   })
   .then(num => {
@@ -54,12 +72,14 @@ const Op = db.Sequelize.Op;
   })
   .catch(err => {
     res.status(500).send({
-      message: "Error updating Payments with id=" + id
+      message: `Error updating Payments with id=${id}`
     });
   });
+};
 
-  const id = req.params.id;
-  Payments.destroy({
+exports.deleteOne = (req, res) => {
+  const id = req.query.id;
+  models.payments.destroy({
     where: { id: id }
   })
   .then(num => {
@@ -75,6 +95,29 @@ const Op = db.Sequelize.Op;
   })
   .catch(err => {
     res.status(500).send({
-      message: "Could not delete Payments with id=" + id
+      message: `Could not delete Payments with id=${id}`
     });
   });
+};
+
+exports.deleteAll = (req, res) => {
+  models.payments.destroy({
+    where: {}
+  })
+  .then(num => {
+    if (num == 1) {
+      res.send({
+        message: "All Payments were deleted successfully!"
+      });
+    } else {
+      res.send({
+        message: `Cannot delete Payments.`
+      });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: `Could not delete Payments.`
+    });
+  });
+};

@@ -1,5 +1,6 @@
 const { sequelize } = require('../utilities/db');
 const db = require('../models/init-models');
+const offices = require('../models/offices');
 const models = db(sequelize);
 
 exports.findAll = (req, res) => {
@@ -20,7 +21,7 @@ exports.findAll = (req, res) => {
 };
 
 exports.create = (req, res) => {
-    const employee = {
+    const offices = {
         officeCode: req.body.officeCode,
         city: req.body.city,
         phone: req.body.phone,
@@ -32,7 +33,7 @@ exports.create = (req, res) => {
         territory: req.body.territory
     }
 
-    models.offices.create(employee)
+    models.offices.create(offices)
         .then(data => {
             res.send(data);
         })

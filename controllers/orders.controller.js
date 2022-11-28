@@ -1,26 +1,46 @@
-const db = require('classicmodels');
-const orders = require('../models/orders');
-const Orders = db.orders;
-const Op = db.Sequelize.Op;
-  const orders = {
-    title: req.body.title,
-    subtitle: req.body.subtitle,
-    author: req.body.author,
-    published: req.body.published ? req.body.published : false
-  };  Orders.create(orders)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
+exports.findAll = (req, res) => {
+  models.orders.findAll()
+  .then(data => {
+      if (data) {
+          res.send(data);
+      } else {
+          res.status(404).send({
+              message: `No Orders.`
+          });
+      }
+  }).catch(err => {
       res.status(500).send({
-        message:
-        err.message || "Some error occurred while creating the Tutorial."
-     });
-    });
+          message: "Error retrieving All Orders."
+      });
+  });
+};
 
+exports.create = (req, res) => {
+  const orders = {
+      orderNumber: req.body.orderNumber,
+      orderDate: req.body.orderDate,
+      requiredDate: req.body.requiredDate,
+      shippedDate: req.body.shippedDate,
+      status: req.body.status,
+      comments: req.body.comments,
+      customerNumber: req.body.customerNumber
+  }
 
-  const id = req.params.id;
-  Orders.findByPk(id)
+  models.orders.create(orders)
+      .then(data => {
+          res.send(data);
+      })
+      .catch(err => {
+          res.status(500).send({
+              message:
+              err.message || "Some error occurred while creating the Orders."
+          });
+      });
+};
+
+exports.findOne = (req, res) => {
+  const id = req.query.id;
+  models.orders.findByPk(id)
     .then(data => {
       if (data) {
         res.send(data);
@@ -32,13 +52,14 @@ const Op = db.Sequelize.Op;
     })
     .catch(err => {
       res.status(500).send({
-      message: "Error retrieving Orders with id=" + id
+      message: `Error retrieving Orders with id=${id}`
     });
   });
+};
 
-
-  const id = req.params.id;
-  Orders.update(req.body, {
+exports.update = (req, res) => {
+  const id = req.query.id;
+  models.orders.update(req.body, {
     where: { id: id }
   })
   .then(num => {
@@ -54,12 +75,14 @@ const Op = db.Sequelize.Op;
   })
   .catch(err => {
     res.status(500).send({
-      message: "Error updating Orders with id=" + id
+      message: `Error updating Orders with id=${id}`
     });
   });
+};
 
-  const id = req.params.id;
-  Orders.destroy({
+exports.deleteOne = (req, res) => {
+  const id = req.query.id;
+  models.orders.destroy({
     where: { id: id }
   })
   .then(num => {
@@ -75,6 +98,29 @@ const Op = db.Sequelize.Op;
   })
   .catch(err => {
     res.status(500).send({
-      message: "Could not delete Orders with id=" + id
+      message: `Could not delete Orders with id=${id}`
     });
   });
+};
+
+exports.deleteAll = (req, res) => {
+  models.orders.destroy({
+    where: {}
+  })
+  .then(num => {
+    if (num == 1) {
+      res.send({
+        message: "All Orders were deleted successfully!"
+      });
+    } else {
+      res.send({
+        message: `Cannot delete Orders.`
+      });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: `Could not delete Orders.`
+    });
+  });
+};
