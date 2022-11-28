@@ -3,7 +3,7 @@ module.exports = app => {
 
     var router = require('express').Router();
     router.get("/find/all", employees.findAll);
-    router.get("find/specific", employees.findOne);
+    router.get("/find/specific", employees.findOne);
     router.put("/update", employees.update);
     router.post("/create", employees.create);
     router.delete("/delete/all", employees.deleteAll);
